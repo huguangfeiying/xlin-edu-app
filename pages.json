@@ -20,7 +20,7 @@
 						"buttons": [ // 按钮，注意是数组，中括号[]
 							{
 								"fontSrc": "/static/icon/iconfont.ttf", // 指定图标文件
-								"text": "\ue689", // /u 开头，后面 e开始
+								"text": "\ue76f", // /u 开头，后面 e开始
 								"fontSize":"23" ,// 按钮大小
 								"background": "rgba(0,0,0,0)" // 按钮全透明背景
 							}

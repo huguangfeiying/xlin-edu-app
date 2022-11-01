@@ -16,7 +16,7 @@ export const msg = (title = '', param={}) => {
  * @return {Boolean}
  */
 export const isLogin = (options={}) => {
-	const token = uni.getStorageSync('mxgEducationToken');
+	const token = uni.getStorageSync('xlinEducationToken');
 	if(token){
 		return true;
 	}
