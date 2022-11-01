@@ -13,7 +13,10 @@
 
     <view class="list-container">
       <!-- 热门推荐 -->
-      <swiper-course name="热门推荐" word="HOT" ></swiper-course>
+      <swiper-course name="热门推荐" word="HOT"></swiper-course>
+      <swiper-course name="免费精选" word="FREE"></swiper-course>
+      <scroll-course name="近期上新" word="NEW"></scroll-course>
+      <list-course name="付费精品" word="NICE"></list-course>
     </view>
 
   </view>
@@ -24,19 +27,49 @@
   import xlinBanner from '@/components/common/xlin-banner.vue'
   import categoryBox from './components/category-box.vue'
   import swiperCourse from './components/swiper-course.vue'
+  import scrollCourse from './components/scroll-course.vue'
+  import listCourse from './components/list-course.vue'
 
   export default {
     components: {
       searchInput,
       xlinBanner,
       categoryBox,
-      swiperCourse
+      swiperCourse,
+      scrollCourse,
+      listCourse
     },
 
     onLoad() {
       // #ifdef APP-PLUS
       this.placeholderData()
       // #endif
+    },
+
+    // 监听原生标题栏按钮点击 事件，参数为Object
+    onNavigationBarButtonTap(e) {
+      console.log('e：', e.index, "监听原生标题栏按钮点击事件，参数为Object")
+      // 点击第1个按钮
+      if (e.index === 0) {
+        // 打开扫一扫功能,允许从相机和相册扫码
+        uni.scanCode({
+          success: (res) => { // 如果要在方法中使用 this 则使用箭头函数
+            console.log('扫码成功！');
+            console.log('条码类型：' + res.scanType);
+            console.log('条码内容：' + res.result);
+            uni.navigateTo({
+              url: `/pages/public/web-view?url=${res.result}`
+            })
+          },
+          fail: () => {
+            console.log('扫码失败了！');
+            uni.showModal({
+              title: '扫码失败',
+              icon: ''
+            })
+          }
+        });
+      }
     },
 
     methods: {

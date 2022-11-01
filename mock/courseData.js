@@ -144,7 +144,7 @@ export default [
 	},
 	{
 		id: 14,
-		mainImage: '/static/imagesc/11.jpg',
+		mainImage: '/static/images/c11.jpg',
 		totalTime: '12:09:18',
 		title: '幼儿学前教育，专业带娃',
 		nickName: '小叶老师',

@@ -16,8 +16,9 @@
 							"placeholder": "搜索你想要的内容",
 							"placeholderColor":"#979C9D", // 提示文本颜色
 							"disabled": true // 禁止输入，点击跳转到搜索页
-						},
-						"buttons": [ // 按钮，注意是数组，中括号[]
+						}
+            // #ifdef APP-PLUS
+						,"buttons": [ // 按钮，注意是数组，中括号[]
 							{
 								"fontSrc": "/static/icon/iconfont.ttf", // 指定图标文件
 								"text": "\ue76f", // /u 开头，后面 e开始
@@ -25,6 +26,7 @@
 								"background": "rgba(0,0,0,0)" // 按钮全透明背景
 							}
 						]
+            // #endif
 					}
 				}
 			}
