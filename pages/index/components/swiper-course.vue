@@ -1,60 +1,55 @@
 <template>
-	<view class="list-box">
-		<view class="title space-between center">
-			<view class="center">
-				<text class="name">热门推荐</text>
-				<text class="word">HOT</text>
-			</view>
-			<view class="all">
-				<text >全部</text>
-				<text class="iconfont icon-right"></text>
-			</view>
-		</view>
-		<swiper class="list-swiper" next-margin="30rpx">
-			<swiper-item class="swiper-item" v-for="(n, index) in 2" :key="index">
-				<course-item v-for="(item, i) in 4" :key="i"></course-item>
-			</swiper-item>
-		</swiper>
-	</view>
+  <list-box :name="name" :word="word">
+    <swiper :style="{'height': `${200*rows}rpx`}" next-margin="30rpx">
+      <swiper-item class="swiper-item" v-for="(n, index) in column" :key="index">
+        <!-- rows=4
+           slice(start, end) 获取数组中指定范围元素数组，包头不包尾
+           开始下标：0，结束下标4
+           index*rows, (index+1)*rows
+           -->
+        <course-item v-for="(item, i) in courseData.slice(index*rows, (index+1)*rows)" :key="i" :item="item">
+        </course-item>
+      </swiper-item>
+    </swiper>
+  </list-box>
+  </view>
 </template>
 
 <script>
-	import courseItem from '@/components/common/course-item.vue'
-	export default {
-		components: {courseItem}
-	}
+  import listBox from './list-box.vue'
+  import courseItem from '@/components/common/course-item.vue'
+  import courseData from '@/mock/courseData.js'
+
+  export default {
+    components: {
+      listBox,
+      courseItem
+    },
+    props: {
+      name: {
+        type: String,
+        default: '热门推荐'
+      },
+      word: { // HOT
+        type: String,
+        default: null
+      },
+      column: { // 默认swiper-item展示2列
+        type: Number,
+        default: 2
+      },
+      rows: { // 默认4行
+        type: Number,
+        default: 5
+      },
+      courseData: {
+        type: Array,
+        default: () => courseData
+      }
+    }
+  }
 </script>
 
 <style lang="scss">
-	.list-box {
-		margin-top: 60rpx;
-		.name {
-			font-size: 38rpx;
-			font-weight: 500;
-			color: #303133;
-			margin-right: 10rpx;
-		}
-		.word {
-			font-size: 20rpx;
-			background-image: linear-gradient(to right, $xlin-color-orange, $xlin-text-color-red);
-			color: #fff;
-			padding: 0 10rpx;
-			border-radius: 30rpx 30rpx 30rpx 0;
-		}
-		.all {
-			font-weight: normal;
-			color: $xlin-text-color-grey;
-			font-size: 28rpx;
-			.iconfont {
-				font-size: 25rpx;
-			}
-		}
-		
-		.list-swiper {
-			height: 800rpx;
-			.swiper-item {
-				// background-color: #FA140E;
-			}
-		}
-	}
+
 </style>
