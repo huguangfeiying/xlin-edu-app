@@ -16,7 +16,7 @@
       <swiper-course name="热门推荐" word="HOT" :courseData="hotCourseList"></swiper-course>
       <scroll-course name="近期上新" word="NEW" :courseData="newCourseList"></scroll-course>
       <swiper-course name="免费精选" word="FREE" :courseData="freeCourseList"></swiper-course>
-      <list-course name="付费精品" word="NICE" :courseData="payCourseList"></list-course>
+    	 <list-course name="付费精品" word="NICE" :courseData="payCourseList"></list-course>
     </view>
 
   </view>
