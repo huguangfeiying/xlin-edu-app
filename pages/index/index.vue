@@ -1,8 +1,8 @@
 <template>
   <view class="index-box">
     <!-- #ifdef MP -->
-    <!-- 搜索框在小程序中显示 -->
-    <search-input></search-input>
+    <!-- 搜索框在小程序中显示 , .native 不要少了（使用原生的点击事件）-->
+    <search-input @click.native="navTo('/pages/search/search')"></search-input>
     <!-- #endif -->
 
     <!-- 轮播图 -->
@@ -115,6 +115,17 @@
         });
       }
     },
+
+    // 监听搜索框点击事件
+    onNavigationBarSearchInputClicked() {
+      // 跳转到搜索页
+      // uni.navigateTo({
+      // 	url: '/pages/search/search'
+      // })
+      // 封装方法
+      this.navTo('/pages/search/search')
+    },
+
 
     methods: {
       // 搜索框提示内容
