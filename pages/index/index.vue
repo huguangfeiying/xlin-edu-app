@@ -6,17 +6,17 @@
     <!-- #endif -->
 
     <!-- 轮播图 -->
-    <xlin-banner></xlin-banner>
+    <xlin-banner :bannerList="bannerList"></xlin-banner>
 
-    <!-- 分类区域 -->
-    <category-box></category-box>
+    <!-- 分类区域  -->
+    <category-box :categoryList="categoryList"></category-box>
 
     <view class="list-container">
       <!-- 热门推荐 -->
-      <swiper-course name="热门推荐" word="HOT"></swiper-course>
-      <swiper-course name="免费精选" word="FREE"></swiper-course>
-      <scroll-course name="近期上新" word="NEW"></scroll-course>
-      <list-course name="付费精品" word="NICE"></list-course>
+      <swiper-course name="热门推荐" word="HOT" :courseData="hotCourseList"></swiper-course>
+      <scroll-course name="近期上新" word="NEW" :courseData="newCourseList"></scroll-course>
+      <swiper-course name="免费精选" word="FREE" :courseData="freeCourseList"></swiper-course>
+      <list-course name="付费精品" word="NICE" :courseData="payCourseList"></list-course>
     </view>
 
   </view>
@@ -29,6 +29,7 @@
   import swiperCourse from './components/swiper-course.vue'
   import scrollCourse from './components/scroll-course.vue'
   import listCourse from './components/list-course.vue'
+  import api from '@/api/course.js'
 
   export default {
     components: {
@@ -44,6 +45,25 @@
       // #ifdef APP-PLUS
       this.placeholderData()
       // #endif
+      // 查询数据
+      this.loadBannerData()
+      this.loadCateData()
+      // 查询列表数据
+      this.loadHotCourseData()
+      this.loadFreeCourseData()
+      this.loadNewCourseData()
+      this.loadPayCourseData()
+    },
+
+    data() {
+      return {
+        bannerList: [],
+        categoryList: [],
+        hotCourseList: [], //热门列表数据
+        freeCourseList: [],
+        newCourseList: [],
+        payCourseList: [],
+      }
     },
 
     // 监听原生标题栏按钮点击 事件，参数为Object
@@ -101,7 +121,47 @@
             }
           })
         }, 3000)
-      }
+      },
+
+      // 查询轮播图数据
+      async loadBannerData() {
+        const { data } = await api.getAdvertList(1)
+        this.bannerList = data
+        // console.log('data', data)
+      },
+
+      // 查询分类数据
+      async loadCateData() {
+        const { data } = await api.getCategoryList()
+        this.categoryList = data
+        console.log('cate', this.categoryList)
+      },
+
+      // 查询热门推荐数据
+      async loadHotCourseData() {
+        const { data } = await api.getList({ sort: 'hot' }, 1, 8)
+        this.hotCourseList = data.records
+        console.log('hotCourseList', this.hotCourseList)
+      },
+      // 免费列表
+      async loadFreeCourseData() {
+        // 0收费，1免费
+        const { data } = await api.getList({ isFree: 1 }, 1, 8)
+        this.freeCourseList = data.records
+      },
+
+      // 近期上新
+      async loadNewCourseData() {
+        const { data } = await api.getList({ sort: 'new' }, 1, 10)
+        this.newCourseList = data.records
+      },
+
+      // 免费列表
+      async loadPayCourseData() {
+        // 0收费，1免费
+        const { data } = await api.getList({ isFree: 0 })
+        this.payCourseList = data.records
+      },
     }
   }
 </script>

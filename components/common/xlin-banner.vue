@@ -24,24 +24,24 @@
 			bannerList: { // 轮播图数组
 				type: Array, 
 				default: () => [
-					{
-						id: 1,
-						imageUrl: '/static/images/banner1.jpg',
-						background: '#95bfc2',
-						advertUrl: '/pages/course/course-details'
-					},
-					{
-						id: 2,
-						imageUrl: '/static/images/banner2.jpg',
-						background: '#135686',
-						advertUrl: '/pages/course/course-details'
-					},
-					{
-						id: 3,
-						imageUrl: '/static/images/banner3.jpg',
-						background: '#4aaffd',
-						advertUrl: '/pages/course/course-details'
-					}
+					// {
+					// 	id: 1,
+					// 	imageUrl: '/static/images/banner1.jpg',
+					// 	background: '#95bfc2',
+					// 	advertUrl: '/pages/course/course-details'
+					// },
+					// {
+					// 	id: 2,
+					// 	imageUrl: '/static/images/banner2.jpg',
+					// 	background: '#135686',
+					// 	advertUrl: '/pages/course/course-details'
+					// },
+					// {
+					// 	id: 3,
+					// 	imageUrl: '/static/images/banner3.jpg',
+					// 	background: '#4aaffd',
+					// 	advertUrl: '/pages/course/course-details'
+					// }
 				]
 			}
 		},

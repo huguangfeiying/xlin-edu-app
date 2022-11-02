@@ -5,7 +5,7 @@ let BASE_URL = '/api'
 
 // #ifndef H5
 // 非h5端没有跨域问题
-BASE_URL = 'https://mock.mengxuegu.com/mock/5fcf2c9a6abe342cf5308a71/xlin-edu-app-teacher'
+BASE_URL = 'https://mock.mengxuegu.com/mock/6361598cffa946598c7426eb/xlin-edu-app'
 // #endif
 
 //  'development'
