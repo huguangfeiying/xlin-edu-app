@@ -11,13 +11,21 @@
     <!-- 分类区域  -->
     <category-box :categoryList="categoryList"></category-box>
 
-    <view class="list-container">
-      <!-- 热门推荐 -->
-      <swiper-course name="热门推荐" word="HOT" :courseData="hotCourseList"></swiper-course>
-      <scroll-course name="近期上新" word="NEW" :courseData="newCourseList"></scroll-course>
-      <swiper-course name="免费精选" word="FREE" :courseData="freeCourseList"></swiper-course>
-    	 <list-course name="付费精品" word="NICE" :courseData="payCourseList"></list-course>
-    </view>
+    <!-- @init="mescrollInit" @down="downCallback" @up="upCallback"为固定值,不可删改(与mescroll-mixins保持一致)
+    :down="downOption" :up="upOption" 绝大部分情况无需配置 
+    :top="顶部偏移量" :bottom="底部偏移量" :topbar="状态栏" :safearea="安全区" (常用)
+    字节跳动小程序 ref="mescrollRef" 必须配置 
+    此处支持写入原生组件 -->
+    <mescroll-body ref="mescrollRef" @init="mescrollInit" @down="downCallback" @up="upCallback" :down="downOption"
+      :up="upOption">
+      <view class="list-container">
+        <!-- 热门推荐 -->
+        <swiper-course name="热门推荐" word="HOT" :courseData="hotCourseList"></swiper-course>
+        <scroll-course name="近期上新" word="NEW" :courseData="newCourseList"></scroll-course>
+        <swiper-course name="免费精选" word="FREE" :courseData="freeCourseList"></swiper-course>
+        <list-course name="付费精品" word="NICE" :courseData="payCourseList"></list-course>
+      </view>
+    </mescroll-body>
 
   </view>
 </template>
@@ -30,8 +38,12 @@
   import scrollCourse from './components/scroll-course.vue'
   import listCourse from './components/list-course.vue'
   import api from '@/api/course.js'
+  // 引入mescroll-mixins.js
+  import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
 
   export default {
+    mixins: [MescrollMixin], // 使用mixin
+
     components: {
       searchInput,
       xlinBanner,
@@ -46,13 +58,13 @@
       this.placeholderData()
       // #endif
       // 查询数据
-      this.loadBannerData()
-      this.loadCateData()
-      // 查询列表数据
-      this.loadHotCourseData()
-      this.loadFreeCourseData()
-      this.loadNewCourseData()
-      this.loadPayCourseData()
+      // this.loadBannerData()
+      // this.loadCateData()
+      // // 查询列表数据
+      // this.loadHotCourseData()
+      // this.loadFreeCourseData()
+      // this.loadNewCourseData()
+      // this.loadPayCourseData()
     },
 
     data() {
@@ -63,6 +75,18 @@
         freeCourseList: [],
         newCourseList: [],
         payCourseList: [],
+        downOption: {
+          offset: 50, // 下拉大于50px,松手即可触发下拉刷新的回调
+          // textLoading: '亲亲，稍等加载中'
+        },
+        upOption: {
+          // textLoading: '亲亲，在查询下页数据中',
+          page: {
+            num: 0, // 当前页码,默认0,回调之前会加1,即callback(page)会从1开始
+            size: 10, // 每页数据的数量
+          },
+          textNoMore: '-- 没有数据了 --',
+        }
       }
     },
 
@@ -162,6 +186,43 @@
         const { data } = await api.getList({ isFree: 0 })
         this.payCourseList = data.records
       },
+
+      /*下拉刷新的回调, 有3种处理方式:*/
+      // downCallback(){
+      //    console.log('下拉刷新')
+      // },
+
+      /*上拉加载的回调*/
+      async upCallback(page) {
+        let pageNum = page.num; // 当前页码, 默认从1开始
+        let pageSize = page.size; // 每显每页显示多少条数据, 默认每页10条
+        // console.log('上拉加载的回调', page.num)
+        // 如果是第1页，则是下拉刷新
+        if (page.num === 1) {
+          // 查询数据
+          this.loadBannerData()
+          this.loadCateData()
+          // 查询列表数据
+          this.loadHotCourseData()
+          this.loadFreeCourseData()
+          this.loadNewCourseData()
+        }
+
+        // 分页查询
+        // this.loadPayCourseData()
+        // 付费列表 （0收费，1免费）
+        const { data } = await api.getList({ isFree: 0 }, page.num, page.size)
+        const curList = data.records
+        console.log('data', data)
+
+        // 判断是否第1页，是则将原付费数据清空
+        if (page.num === 1) this.payCourseList = []
+        // 追加新数据
+        this.payCourseList = this.payCourseList.concat(curList)
+
+        // 请求成功，隐藏加载状态
+        this.mescroll.endBySize(curList.length, data.total)
+      }
     }
   }
 </script>
